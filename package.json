@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "^14.2.33",
     "@supabase/supabase-js": "^2.45.4",
     "lucide-react": "^0.468.0",
     "next": "^14.2.21",
