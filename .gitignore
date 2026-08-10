@@ -5,3 +5,4 @@ npm-debug.log*
 *.tsbuildinfo
 .n8n-*.log
 .localtunnel-*.log
+.cloudflared-*.log
