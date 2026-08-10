@@ -42,13 +42,22 @@ export async function POST(request: Request) {
   }
 
   if (isFault && process.env.N8N_WEBHOOK_URL) {
-    void fetch(process.env.N8N_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    }).catch((webhookError: unknown) => {
+    try {
+      const webhookResponse = await fetch(process.env.N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        signal: AbortSignal.timeout(8_000),
+      });
+
+      if (!webhookResponse.ok) {
+        console.error(
+          `Fault webhook returned HTTP ${webhookResponse.status}.`,
+        );
+      }
+    } catch (webhookError: unknown) {
       console.error("Fault webhook dispatch failed:", webhookError);
-    });
+    }
   }
 
   return NextResponse.json<ApiResponse>(
